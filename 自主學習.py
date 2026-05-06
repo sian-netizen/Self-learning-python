@@ -5,7 +5,7 @@ status = 2
 wb=Workbook()
 i = []
 m = []
-
+money = 0
 
 def get_values(sheet):
     arr = []                      
@@ -31,11 +31,11 @@ while status != 0:
         m.append(money)
         
         ws.append(['時間','數量','價格','獲利'])
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:'))
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:'))
     
     
     
-    if status == 1:    #新增資料
+    elif status == 1:    #新增資料
         now = time.now()
         t = now.strftime('%H:%M:%S')
         number = int(input('數量'))   
@@ -53,27 +53,37 @@ while status != 0:
         print(data)
         for tea in data:
             ws.append(list(tea.values()))
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:'))
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:'))
         
         
-    if status == 3:    #切換
+    elif status == 3:    #切換
         print(wb.sheetnames)
         sheet = input('想切換的工作表:')
+        while (sheet not in wb.sheetnames):
+            print('未有此工作表 請重新輸入')
+            sheet = input('想切換的工作表:')
         ws = wb[sheet]
         print(ws)
         money = m[i.index(sheet)]
         #money = ws['C2'].value
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:'))
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:'))
     
-    if status == 4:    #查看
+    elif status == 4:    #查看
         print(wb.sheetnames)
-        for value in get_values(wb[input('請輸入想查看的工作表:')]):
+        target_sheet = input('請輸入想查看的工作表:')
+        while (target_sheet not in wb.sheetnames):
+            print('未有此工作表 請重新輸入')
+            target_sheet = input('請輸入想查看的工作表:')
+        for value in get_values(wb[target_sheet]):
             print(value)
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:'))    
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:'))    
 
-    if status == 5:    #刪除
+    elif status == 5:    #刪除
         print(wb.sheetnames)
         target_sheet = input('請輸入想刪除的資料所在工作表:')
+        while (target_sheet not in wb.sheetnames):
+            print('未有此工作表 請重新輸入')
+            target_sheet = input('請輸入想刪除的資料所在工作表:')
         n = 1
         ws = wb[target_sheet]
         for value in get_values(ws):
@@ -84,11 +94,15 @@ while status != 0:
         target_data = [cell.value for cell in ws[target]]
         print(f'已成功刪除資料{target_data}')
         ws.delete_rows(target)
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:')) 
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:')) 
     
-    if status == 6:   #更新
+    elif status == 6:   #更新
         print(wb.sheetnames)
         target_sheet = input('請輸入想取代的資料所在工作表:')
+        while (target_sheet not in wb.sheetnames):
+            print('未有此工作表 請重新輸入')
+            target_sheet = input('請輸入想取代的資料所在工作表:')
+        
         n = 1
         ws = wb[target_sheet]
         for value in get_values(ws):
@@ -107,7 +121,10 @@ while status != 0:
             cell.value = data  
         
         print(new_data)
-        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按4;更新資料按6:')) 
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:')) 
+    else:
+        print('輸入錯誤 請重新輸入')
+        status = int(input('結束按0;新增購買紀錄按1;新增品項按2;切換工作表按3;查看工作表按4;刪除資料按5;更新資料按6:')) 
 
 
 
